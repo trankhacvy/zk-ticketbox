@@ -1,0 +1,29 @@
+{
+  "name": "@ticketbox/db",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:seed": "tsx src/seed.ts",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "generate": "drizzle-kit generate:pg",
+    "dev": "tsup src/* --watch",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.43.1",
+    "nanoid": "^5.1.5"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "drizzle-kit": "^0.31.1",
+    "eslint": "^8.57.0",
+    "rimraf": "^5.0.5",
+    "typescript": "5.5.4"
+  }
+}

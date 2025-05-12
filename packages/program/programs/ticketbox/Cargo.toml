@@ -1,0 +1,41 @@
+[package]
+name = "ticketbox"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "ticketbox"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = ["idl-build"]
+test-sbf = []
+bench-sbf = []
+idl-build = ["anchor-lang/idl-build", "light-sdk/idl-build"]
+
+[dependencies]
+anchor-lang = "0.29.0"
+light-hasher = { version = "2.0.0", features = ["solana"] }
+light-sdk-macros = "0.5.1"
+light-account-checks = { version = "0.1.0", features = [
+    "solana",
+] }
+light-sdk = "0.10.0"
+borsh = "0.10.0"
+
+zk-nft = { path = "../zk-nft", features = ["cpi"]}
+
+mpl-core = { version = "0.8.0", features = [] }
+anchor-spl = "0.29.0"
+
+[dev-dependencies]
+# light-client = "0.9.1"
+# light-test-utils = { git = "https://github.com/Lightprotocol/light-protocol", branch = "main", version = "1.2.1"}
+# solana-program-test = "1.18.22"
+# tokio = "1.36.0"
+# solana-sdk = "1.18.22"

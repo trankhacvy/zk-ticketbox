@@ -1,0 +1,20 @@
+[toolchain]
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+ticketbox = "91VDSbGsnyEzp4JyveazJvrWiLwKwUTDnCVTzedb9obT"
+zk-nft = "A9j21mfH4nKEfGYmsqZPX1j5H1H8WpD2of8aiyAnPUQU"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "/Users/trankhacvy/.config/solana/id.json"
+
+[scripts]
+# test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/zk-nft.ts"
+test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/ticketbox.ts"

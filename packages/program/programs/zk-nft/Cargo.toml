@@ -1,0 +1,29 @@
+[package]
+name = "zk-nft"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "zk_nft"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = ["idl-build"]
+test-sbf = []
+bench-sbf = []
+idl-build = ["anchor-lang/idl-build", "light-sdk/idl-build"]
+
+[dependencies]
+anchor-lang = "0.29.0"
+light-hasher = { version = "2.0.0", features = ["solana"] }
+light-sdk-macros = "0.5.1"
+light-account-checks = { version = "0.1.0", features = [
+    "solana",
+] }
+light-sdk = "0.10.0"
+borsh = "0.10.0"
