@@ -1,3 +1,5 @@
+// @ts-expect-error
+import { unstable_ViewTransition as ViewTransition } from "react";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import {
@@ -15,8 +17,6 @@ import { Badge } from "@acme/ui/components/badge";
 import { Separator } from "@acme/ui/components/separator";
 import { getEventById } from "@ticketbox/db";
 import Link from "next/link";
-// import { EventQRCode } from "@/components/event-qr-code";
-// import { getEventById, getCurrentUser, isEventCreator } from "@/lib/mock-data";
 
 export async function generateMetadata({
   params,
@@ -77,7 +77,7 @@ export default async function EventPage({
 
       <div className="p-4 border-b">
         <h1 className="text-xl font-bold flex items-center gap-2">
-          <Link href="/explore">
+          <Link href="/explore" scroll={false}>
             <Button size="icon" variant="ghost">
               <ArrowLeftIcon className="h-5 w-5" />
             </Button>
@@ -88,15 +88,17 @@ export default async function EventPage({
 
       <div className="grid gap-6 md:grid-cols-3 p-4">
         {event.thumbnailUrl && (
-          <div className="overflow-hidden aspect-square rounded-lg">
-            <Image
-              src={event.thumbnailUrl || "/placeholder.svg"}
-              alt={event.name}
-              width={800}
-              height={400}
-              className="w-full object-cover"
-            />
-          </div>
+          <ViewTransition name={`event-thumbnail-${event.id}`}>
+            <div className="overflow-hidden aspect-square rounded-lg">
+              <Image
+                src={event.thumbnailUrl || "/placeholder.svg"}
+                alt={event.name}
+                width={800}
+                height={400}
+                className="w-full object-cover"
+              />
+            </div>
+          </ViewTransition>
         )}
 
         <div className="md:col-span-2">
@@ -115,7 +117,9 @@ export default async function EventPage({
             )}
           </div>
 
-          <h1 className="mb-4 text-3xl font-bold">{event.name}</h1>
+          <ViewTransition name={`event-title-${event.id}`}>
+            <h1 className="mb-4 text-3xl font-bold">{event.name}</h1>
+          </ViewTransition>
 
           <div className="mb-6 grid gap-3">
             <div className="flex items-start gap-2">

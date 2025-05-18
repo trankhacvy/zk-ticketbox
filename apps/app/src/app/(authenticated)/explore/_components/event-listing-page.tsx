@@ -1,10 +1,10 @@
 "use client";
 
+// @ts-expect-error
+import { unstable_ViewTransition as ViewTransition } from "react";
 import Image from "next/image";
 import {
   CalendarDays,
-  EditIcon,
-  EyeIcon,
   GlobeIcon,
   MapPinIcon,
   Search,
@@ -13,7 +13,6 @@ import {
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@acme/ui/components/card";
@@ -28,64 +27,7 @@ import {
 import type { Event } from "@ticketbox/db";
 import { Badge } from "@acme/ui/components/badge";
 import { format } from "date-fns";
-import { Button } from "@acme/ui/components/button";
 import Link from "next/link";
-
-// // Mock data for upcoming events
-// const upcomingEvents = [
-//   {
-//     id: 1,
-//     name: "ETH Denver 2025",
-//     date: "Feb 28 - Mar 3, 2025",
-//     location: "Denver, CO",
-//     image:
-//       "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/travel/travel-1.webp",
-//   },
-//   {
-//     id: 2,
-//     name: "NFT NYC 2024",
-//     date: "Jun 10-12, 2024",
-//     location: "New York, NY",
-//     image:
-//       "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/travel/travel-1.webp",
-//   },
-//   {
-//     id: 3,
-//     name: "Devcon 2024",
-//     date: "Oct 15-18, 2024",
-//     location: "Bangkok, Thailand",
-//     image:
-//       "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/travel/travel-1.webp",
-//   },
-// ];
-
-// // Mock data for popular events
-// const popularEvents = [
-//   {
-//     id: 4,
-//     name: "ETH Global Paris",
-//     date: "Jul 21-23, 2024",
-//     location: "Paris, France",
-//     image:
-//       "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/travel/travel-1.webp",
-//   },
-//   {
-//     id: 5,
-//     name: "Web3 Summit",
-//     date: "Sep 8-10, 2024",
-//     location: "Berlin, Germany",
-//     image:
-//       "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/travel/travel-1.webp",
-//   },
-//   {
-//     id: 6,
-//     name: "Consensus 2024",
-//     date: "May 29-31, 2024",
-//     location: "Austin, TX",
-//     image:
-//       "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/travel/travel-1.webp",
-//   },
-// ];
 
 export default function EventListingPage({ events }: { events: Event[] }) {
   return (
@@ -115,9 +57,9 @@ export default function EventListingPage({ events }: { events: Event[] }) {
           </TabsContent>
           <TabsContent value="popular" className="p-0">
             <ScrollArea className="h-[calc(100vh-180px)]">
-              <div className="space-y-4">
+              <div>
                 {events.map((event) => (
-                  <EventCard event={event} />
+                  <EventCard key={event.id} event={event} />
                 ))}
               </div>
             </ScrollArea>
@@ -136,24 +78,30 @@ export function EventCard({ event }: EventCardProps) {
   return (
     <Link href={`/explore/${event.id}`}>
       <Card key={event.id} className="overflow-hidden flex flex-col py-0">
-        <div className="aspect-square relative">
-          <Image
-            src={event.thumbnailUrl || "/placeholder.svg?height=200&width=400"}
-            alt={event.name}
-            fill
-            className="object-cover"
-          />
-          {!event.isPublished && (
-            <div className="absolute top-2 left-2">
-              <Badge variant="outline" className="bg-white">
-                Draft
-              </Badge>
-            </div>
-          )}
-        </div>
+        <ViewTransition name={`event-thumbnail-${event.id}`}>
+          <div className="aspect-square relative">
+            <Image
+              src={
+                event.thumbnailUrl || "/placeholder.svg?height=200&width=400"
+              }
+              alt={event.name}
+              fill
+              className="object-cover"
+            />
+            {!event.isPublished && (
+              <div className="absolute top-2 left-2">
+                <Badge variant="outline" className="bg-white">
+                  Draft
+                </Badge>
+              </div>
+            )}
+          </div>
+        </ViewTransition>
         <CardHeader>
           <div className="flex justify-between items-start">
-            <CardTitle className="line-clamp-1">{event.name}</CardTitle>
+            <ViewTransition name={`event-title-${event.id}`}>
+              <CardTitle className="line-clamp-1">{event.name}</CardTitle>
+            </ViewTransition>
             <Badge
               variant={
                 event.locationType === "online" ? "secondary" : "outline"
